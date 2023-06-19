@@ -18,7 +18,7 @@ const Login = () => {
 	} = useSelector((state) => state.auth);
 
 	useEffect(() => {
-		if (!isLoading && !isError) {
+		if (!isLoading && email) {
 			toast.success('Login successful');
 			navigate('/');
 		}
