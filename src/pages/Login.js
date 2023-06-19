@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/login.svg';
-import { loginUser } from '../features/auth/authSlice';
+import { googleLogin, loginUser } from '../features/auth/authSlice';
 
 const Login = () => {
 	const { register, handleSubmit, reset } = useForm();
@@ -70,6 +70,14 @@ const Login = () => {
 										Sign up
 									</span>
 								</p>
+							</div>
+							<div className="relative !mt-8">
+								<button
+									type="button"
+									onClick={() => dispatch(googleLogin())}
+									className="font-bold text-white py-3 rounded-full bg-primary w-full">
+									Login with Google
+								</button>
 							</div>
 						</div>
 					</form>

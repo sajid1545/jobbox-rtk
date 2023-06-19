@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/login.svg';
-import { createUser } from './../features/auth/authSlice';
+import { createUser, googleLogin } from './../features/auth/authSlice';
 const Signup = () => {
 	const { handleSubmit, register, reset, control } = useForm();
 	const password = useWatch({ control, name: 'password' });
@@ -35,7 +35,7 @@ const Signup = () => {
 	}, [password, confirmPassword]);
 
 	useEffect(() => {
-		if (!isLoading && !isError) {
+		if (!isLoading && email) {
 			toast.success('Account created successfully');
 			navigate('/');
 		}
@@ -95,6 +95,14 @@ const Signup = () => {
 										Login
 									</span>
 								</p>
+							</div>
+							<div className="relative !mt-8">
+								<button
+									type="button"
+									onClick={() => dispatch(googleLogin())}
+									className="font-bold text-white py-3 rounded-full bg-primary w-full">
+									Sign Up with Google
+								</button>
 							</div>
 						</div>
 					</form>
