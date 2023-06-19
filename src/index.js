@@ -10,7 +10,16 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<Toaster />
+			<Toaster
+				toastOptions={{
+					className: '',
+					style: {
+						padding: '16px',
+						background: '#000000',
+						color: 'white',
+					},
+				}}
+			/>
 			<App />
 		</Provider>
 	</React.StrictMode>
