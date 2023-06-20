@@ -7,6 +7,10 @@ const Sidebar = () => {
 
 	const employerRoutes = [
 		{
+			name: 'My Jobs',
+			path: 'my-jobs',
+		},
+		{
 			name: 'Add Job',
 			path: 'add-job',
 		},

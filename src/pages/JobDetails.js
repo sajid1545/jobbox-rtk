@@ -44,12 +44,15 @@ const JobDetails = () => {
 	useEffect(() => {
 		if (applySuccess) {
 			toast.success('Applied Successfully');
+			return;
 		}
 		if (questionSuccess) {
 			reset();
+			return;
 		}
 		if (replySuccess) {
 			toast.success('Reply added successfully');
+			return;
 		}
 	}, [applySuccess, questionSuccess, replySuccess]);
 

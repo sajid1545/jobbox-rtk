@@ -8,6 +8,7 @@ import Signup from '../pages/Signup';
 import CandidateDashboard from '../pages/candidateDashboard/CandidateDashboard';
 import AddJob from '../pages/employeeDashboard/AddJob';
 import EmployerDashboard from '../pages/employeeDashboard/EmployerDashboard';
+import MyJobs from '../pages/employeeDashboard/MyJobs';
 import Home from '../pages/home/Home';
 import AccountCreator from '../pages/register/AccountCreator';
 import PrivateRoute from '../utils/PrivateRoute';
@@ -64,6 +65,10 @@ const routes = createBrowserRouter([
 			</PrivateRoute>
 		),
 		children: [
+			{
+				path: 'my-jobs',
+				element: <MyJobs />,
+			},
 			{
 				path: 'add-job',
 				element: <AddJob />,
