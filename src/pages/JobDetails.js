@@ -18,7 +18,7 @@ const JobDetails = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const { user } = useSelector((state) => state.auth);
-	const { isLoading, data } = useGetJobByIdQuery(id);
+	const { isLoading, data } = useGetJobByIdQuery(id, { pollingInterval: 1000 });
 	const [reply, setReply] = useState('');
 
 	const {
@@ -46,7 +46,6 @@ const JobDetails = () => {
 			toast.success('Applied Successfully');
 		}
 		if (questionSuccess) {
-			toast.success('Question added successfully');
 			reset();
 		}
 		if (replySuccess) {
@@ -85,7 +84,13 @@ const JobDetails = () => {
 		addQuestion(quesData);
 	};
 
-	const handleReply = (data) => {};
+	const handleReply = (id) => {
+		const data = {
+			userId: id,
+			reply,
+		};
+		addReply(data);
+	};
 
 	return (
 		<>
@@ -163,6 +168,7 @@ const JobDetails = () => {
 														className="w-full"
 													/>
 													<button
+														onClick={() => handleReply(id)}
 														className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
 														type="button">
 														<BsArrowRightShort size={30} />
