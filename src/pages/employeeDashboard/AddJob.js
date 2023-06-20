@@ -44,6 +44,7 @@ const AddJob = () => {
 	const onSubmit = (data) => {
 		addJob({
 			...data,
+			jobStatus: 'open',
 			employerInfo: { email: user.email, id: user._id },
 			applicants: [],
 			queries: [],
