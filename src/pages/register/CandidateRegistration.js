@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { FaChevronLeft } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '../../features/auth/authApi';
 
 const CandidateRegistration = () => {
+	const {
+		user: { email },
+	} = useSelector((state) => state.auth);
+	const [addCandidate, { isLoading, isError, error, isSuccess }] = useRegisterMutation();
 	const [countries, setCountries] = useState([]);
-	const { handleSubmit, register, control } = useForm();
+	const { handleSubmit, register, control, reset } = useForm({
+		defaultValues: {
+			email,
+		},
+	});
 	const term = useWatch({ control, name: 'term' });
 	const navigate = useNavigate();
 
@@ -15,8 +26,20 @@ const CandidateRegistration = () => {
 			.then((data) => setCountries(data));
 	}, []);
 
+	useEffect(() => {
+		if (isSuccess) {
+			toast.success('Registration Successful', { id: 'addCandidate' });
+			reset();
+		}
+
+		if (isError) {
+			toast.error(error, { id: 'addCandidate' });
+		}
+	}, [isSuccess, isError, error, reset]);
+
 	const onSubmit = (data) => {
 		console.log(data);
+		addCandidate({ ...data, role: 'candidate' });
 	};
 
 	return (
@@ -48,7 +71,13 @@ const CandidateRegistration = () => {
 						<label className="mb-2" htmlFor="email">
 							Email
 						</label>
-						<input type="email" id="email" {...register('email')} />
+						<input
+							className="cursor-not-allowed"
+							disabled
+							type="email"
+							id="email"
+							{...register('email')}
+						/>
 					</div>
 					<div className="flex flex-col w-full max-w-xs">
 						<h1 className="mb-3">Gender</h1>
@@ -111,7 +140,7 @@ const CandidateRegistration = () => {
 							<label for="terms">I agree to terms and conditions</label>
 						</div>
 						<button disabled={!term} className="btn" type="submit">
-							Submit
+							{isLoading ? 'Loading...' : 'Submit'}
 						</button>
 					</div>
 				</form>

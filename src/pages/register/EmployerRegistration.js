@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useEmployRegisterMutation } from '../../features/auth/authApi';
+import { useRegisterMutation } from '../../features/auth/authApi';
 
 const EmployerRegistration = () => {
 	const {
@@ -42,7 +42,7 @@ const EmployerRegistration = () => {
 
 	const employeeRange = ['1 - 10', '11 - 50', '51 - 100', 'Above 100'];
 
-	const [addEmployer, { isLoading, isError, error, isSuccess }] = useEmployRegisterMutation();
+	const [addEmployer, { isLoading, isError, error, isSuccess }] = useRegisterMutation();
 
 	useEffect(() => {
 		if (isSuccess) {

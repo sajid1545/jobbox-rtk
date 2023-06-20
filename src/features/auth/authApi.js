@@ -3,7 +3,7 @@ import { getUser } from './authSlice';
 
 const authApi = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		employRegister: builder.mutation({
+		register: builder.mutation({
 			query: (data) => ({
 				url: '/user',
 				method: 'POST',
@@ -22,4 +22,4 @@ const authApi = apiSlice.injectEndpoints({
 	}),
 });
 
-export const { useEmployRegisterMutation } = authApi;
+export const { useRegisterMutation } = authApi;
