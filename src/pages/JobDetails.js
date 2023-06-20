@@ -1,20 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { BsArrowReturnRight, BsArrowRightShort } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import meeting from '../assets/meeting.jpg';
 import Loading from '../components/reusable/Loading';
-import { useApplyMutation, useGetJobByIdQuery } from '../features/job/jobApi';
+import {
+	useApplyMutation,
+	useGetJobByIdQuery,
+	useQuestionMutation,
+	useReplyMutation,
+} from '../features/job/jobApi';
 const JobDetails = () => {
+	const { register, handleSubmit, reset } = useForm();
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const { user } = useSelector((state) => state.auth);
-
 	const { isLoading, data } = useGetJobByIdQuery(id);
-
-	const [apply, { isSuccess: applySuccess }] = useApplyMutation();
+	const [reply, setReply] = useState('');
 
 	const {
 		companyName,
@@ -32,11 +37,22 @@ const JobDetails = () => {
 		_id,
 	} = data?.data || {};
 
+	const [apply, { isSuccess: applySuccess }] = useApplyMutation();
+	const [addQuestion, { isSuccess: questionSuccess }] = useQuestionMutation();
+	const [addReply, { isSuccess: replySuccess }] = useReplyMutation();
+
 	useEffect(() => {
 		if (applySuccess) {
 			toast.success('Applied Successfully');
 		}
-	}, [applySuccess]);
+		if (questionSuccess) {
+			toast.success('Question added successfully');
+			reset();
+		}
+		if (replySuccess) {
+			toast.success('Reply added successfully');
+		}
+	}, [applySuccess, questionSuccess, replySuccess]);
 
 	const handleApplyJob = () => {
 		if (user.role === 'employer') {
@@ -57,6 +73,19 @@ const JobDetails = () => {
 
 		apply(data);
 	};
+
+	const handleQuestion = (data) => {
+		const quesData = {
+			userId: user._id,
+			email: user.email,
+			jobId: _id,
+			question: data.question,
+		};
+
+		addQuestion(quesData);
+	};
+
+	const handleReply = (data) => {};
 
 	return (
 		<>
@@ -82,8 +111,8 @@ const JobDetails = () => {
 							<div>
 								<h1 className="text-primary text-lg font-medium mb-3">Skills</h1>
 								<ul>
-									{skills?.map((skill) => (
-										<li className="flex items-center">
+									{skills?.map((skill, idx) => (
+										<li key={idx} className="flex items-center">
 											<BsArrowRightShort /> <span>{skill}</span>
 										</li>
 									))}
@@ -92,8 +121,8 @@ const JobDetails = () => {
 							<div>
 								<h1 className="text-primary text-lg font-medium mb-3">Requirements</h1>
 								<ul>
-									{requirements?.map((skill) => (
-										<li className="flex items-center">
+									{requirements?.map((skill, idx) => (
+										<li key={idx} className="flex items-center">
 											<BsArrowRightShort /> <span>{skill}</span>
 										</li>
 									))}
@@ -102,8 +131,8 @@ const JobDetails = () => {
 							<div>
 								<h1 className="text-primary text-lg font-medium mb-3">Responsibilities</h1>
 								<ul>
-									{responsibilities?.map((skill) => (
-										<li className="flex items-center">
+									{responsibilities?.map((skill, idx) => (
+										<li key={idx} className="flex items-center">
 											<BsArrowRightShort /> <span>{skill}</span>
 										</li>
 									))}
@@ -115,8 +144,8 @@ const JobDetails = () => {
 							<div>
 								<h1 className="text-xl font-semibold text-primary mb-5">General Q&A</h1>
 								<div className="text-primary my-2">
-									{queries?.map(({ question, email, reply, id }) => (
-										<div>
+									{queries?.map(({ question, email, reply, id }, idx) => (
+										<div key={idx}>
 											<small>{email}</small>
 											<p className="text-lg font-medium">{question}</p>
 											{reply?.map((item) => (
@@ -125,26 +154,43 @@ const JobDetails = () => {
 												</p>
 											))}
 
-											<div className="flex gap-3 my-5">
-												<input placeholder="Reply" type="text" className="w-full" />
-												<button
-													className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-													type="button">
-													<BsArrowRightShort size={30} />
-												</button>
-											</div>
+											{user.role === 'employer' && (
+												<div className="flex gap-3 my-5">
+													<input
+														onBlur={(event) => setReply(event.target.value)}
+														placeholder="Reply"
+														type="text"
+														className="w-full"
+													/>
+													<button
+														className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+														type="button">
+														<BsArrowRightShort size={30} />
+													</button>
+												</div>
+											)}
 										</div>
 									))}
 								</div>
 
-								<div className="flex gap-3 my-5">
-									<input placeholder="Ask a question..." type="text" className="w-full" />
-									<button
-										className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-										type="button">
-										<BsArrowRightShort size={30} />
-									</button>
-								</div>
+								{user.role === 'candidate' && (
+									<form onSubmit={handleSubmit(handleQuestion)}>
+										<div className="flex gap-3 my-5">
+											<input
+												placeholder="Ask a question..."
+												{...register('question')}
+												type="text"
+												className="w-full"
+											/>
+											<button
+												onClick={() => handleReply()}
+												className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+												type="submit">
+												<BsArrowRightShort size={30} />
+											</button>
+										</div>
+									</form>
+								)}
 							</div>
 						</div>
 					</div>
