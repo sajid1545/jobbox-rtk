@@ -10,9 +10,7 @@ const AddJob = () => {
 	const { handleSubmit, register, control, reset } = useForm();
 	const navigate = useNavigate();
 
-	const {
-		user: { email, _id },
-	} = useSelector((state) => state.auth);
+	const { user } = useSelector((state) => state.auth);
 	const [addJob, { isLoading, isSuccess, isError, error }] = usePostJobMutation();
 
 	const {
@@ -36,17 +34,20 @@ const AddJob = () => {
 			toast.success('Job added successfully');
 			reset();
 			navigate('/jobs');
-			return;
 		}
 
 		if (isError) {
 			toast.error(error);
-			return;
 		}
 	}, [isError, error, isSuccess]);
 
 	const onSubmit = (data) => {
-		addJob({ ...data, employerInfo: { email: email, id: _id }, applicants: [], queries: [] });
+		addJob({
+			...data,
+			employerInfo: { email: user.email, id: user._id },
+			applicants: [],
+			queries: [],
+		});
 	};
 
 	return (

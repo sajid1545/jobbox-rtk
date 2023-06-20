@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { toast } from 'react-hot-toast';
 import { BsArrowReturnRight, BsArrowRightShort } from 'react-icons/bs';
-import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import meeting from '../assets/meeting.jpg';
 import Loading from '../components/reusable/Loading';
-import { useGetJobByIdQuery } from '../features/job/jobApi';
+import { useApplyMutation, useGetJobByIdQuery } from '../features/job/jobApi';
 const JobDetails = () => {
-  
 	const { id } = useParams();
+	const navigate = useNavigate();
+	const { user } = useSelector((state) => state.auth);
 
 	const { isLoading, data } = useGetJobByIdQuery(id);
+
+	const [apply, { isSuccess: applySuccess }] = useApplyMutation();
 
 	const {
 		companyName,
@@ -27,6 +32,32 @@ const JobDetails = () => {
 		_id,
 	} = data?.data || {};
 
+	useEffect(() => {
+		if (applySuccess) {
+			toast.success('Applied Successfully');
+		}
+	}, [applySuccess]);
+
+	const handleApplyJob = () => {
+		if (user.role === 'employer') {
+			toast.error('You need a candidate account');
+			return;
+		}
+
+		if (user.role === '') {
+			navigate('/register');
+			return;
+		}
+
+		const data = {
+			userId: user._id,
+			email: user.email,
+			jobId: _id,
+		};
+
+		apply(data);
+	};
+
 	return (
 		<>
 			{isLoading ? (
@@ -40,7 +71,9 @@ const JobDetails = () => {
 						<div className="space-y-5">
 							<div className="flex justify-between items-center mt-5">
 								<h1 className="text-xl font-semibold text-primary">{position}</h1>
-								<button className="btn">Apply</button>
+								<button onClick={handleApplyJob} className="btn">
+									Apply
+								</button>
 							</div>
 							<div>
 								<h1 className="text-primary text-lg font-medium mb-3">Overview</h1>
