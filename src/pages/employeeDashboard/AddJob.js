@@ -3,10 +3,12 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { FiTrash } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { usePostJobMutation } from '../../features/job/jobApi';
 
 const AddJob = () => {
 	const { handleSubmit, register, control, reset } = useForm();
+	const navigate = useNavigate();
 
 	const {
 		user: { email, _id },
@@ -33,6 +35,7 @@ const AddJob = () => {
 		if (isSuccess) {
 			toast.success('Job added successfully');
 			reset();
+			navigate('/jobs');
 			return;
 		}
 
