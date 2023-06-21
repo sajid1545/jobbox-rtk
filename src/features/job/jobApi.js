@@ -60,6 +60,20 @@ const jobApi = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['EmployerJobs'],
 		}),
+
+		candidateDetails: builder.query({
+			query: (id) => `/candidate-details/${id}`,
+			providesTags: ['Candidate'],
+		}),
+
+		employerText: builder.mutation({
+			query: (data) => ({
+				url: `/employer-text`,
+				method: 'PATCH',
+				body: data,
+			}),
+			invalidatesTags: ['Candidate'],
+		}),
 	}),
 });
 
@@ -73,4 +87,5 @@ export const {
 	useReplyMutation,
 	useGetJobsByEmployerIdQuery,
 	useCloseJobMutation,
+	useCandidateDetailsQuery,
 } = jobApi;

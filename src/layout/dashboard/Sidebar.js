@@ -25,6 +25,10 @@ const Sidebar = () => {
 			name: 'Applied Jobs',
 			path: 'applied-jobs',
 		},
+		{
+			name: 'My Details',
+			path: `candidate-details/${user._id}`,
+		},
 	];
 
 	return (

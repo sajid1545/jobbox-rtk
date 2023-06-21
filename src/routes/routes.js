@@ -95,6 +95,10 @@ const routes = createBrowserRouter([
 				path: 'employer-candidates/candidate-details/:id',
 				element: <CandidateDetails />,
 			},
+			{
+				path: 'candidate-details/:id',
+				element: <CandidateDetails />,
+			},
 		],
 	},
 ]);

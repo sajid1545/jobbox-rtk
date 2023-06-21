@@ -39,7 +39,7 @@ const CandidateRegistration = () => {
 
 	const onSubmit = (data) => {
 		console.log(data);
-		addCandidate({ ...data, role: 'candidate' });
+		addCandidate({ ...data, role: 'candidate', queries: [] });
 	};
 
 	return (
