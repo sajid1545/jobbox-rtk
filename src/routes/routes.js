@@ -7,6 +7,7 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import CandidateDashboard from '../pages/candidateDashboard/CandidateDashboard';
 import AddJob from '../pages/employeeDashboard/AddJob';
+import CandidateDetails from '../pages/employeeDashboard/CandidateDetails';
 import EmployerCandidates from '../pages/employeeDashboard/EmployerCandidates';
 import EmployerDashboard from '../pages/employeeDashboard/EmployerDashboard';
 import MyJobs from '../pages/employeeDashboard/MyJobs';
@@ -92,7 +93,7 @@ const routes = createBrowserRouter([
 			},
 			{
 				path: 'employer-candidates/candidate-details/:id',
-				element: <CandidateDashboard />,
+				element: <CandidateDetails />,
 			},
 		],
 	},
