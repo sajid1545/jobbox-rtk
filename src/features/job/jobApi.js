@@ -88,4 +88,5 @@ export const {
 	useGetJobsByEmployerIdQuery,
 	useCloseJobMutation,
 	useCandidateDetailsQuery,
+	useEmployerTextMutation,
 } = jobApi;
