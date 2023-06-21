@@ -20,7 +20,8 @@ export const createUser = createAsyncThunk('auth/createUser', async ({ email, pa
 });
 
 export const getUser = createAsyncThunk('auth/getUser', async (email) => {
-	const res = await fetch(`${process.env.REACT_APP_API_URL}/user/${email}`);
+	// const res = await fetch(`http://localhost:5000//user/${email}`);
+	const res = await fetch(`https://jobbox-server-rho.vercel.app/user/${email}`);
 	const data = await res.json();
 	if (data.status) {
 		return data;

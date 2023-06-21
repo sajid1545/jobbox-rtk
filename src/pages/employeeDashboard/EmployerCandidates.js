@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../../components/reusable/Loading';
@@ -8,8 +8,6 @@ const EmployerCandidates = () => {
 	const { user } = useSelector((state) => state.auth);
 
 	const { isLoading, data } = useGetJobsByEmployerIdQuery(user?._id);
-
-	useEffect(() => {});
 
 	return (
 		<>
@@ -60,11 +58,25 @@ const EmployerCandidates = () => {
 														<div className="">
 															<h1>{candidate.email}</h1>
 														</div>
-														<Link to={`candidate-details/${candidate.id}`}>
-															<button className="py-1 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm">
-																Details
-															</button>
-														</Link>
+														<div className="space-x-20">
+															<Link to={`candidate-details/${candidate.id}`}>
+																<button className="py-1 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm">
+																	Details
+																</button>
+															</Link>
+
+															{job?.approved?.map((a) =>
+																a?.email === candidate.email ? (
+																	<span className="text-green-600 font-bold text-xl underline">
+																		Approved
+																	</span>
+																) : (
+																	<button className="py-1 px-4  bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 focus:ring-offset-emerald-200 text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm">
+																		Approve Candidate
+																	</button>
+																)
+															)}
+														</div>
 													</div>
 												</td>
 											);
