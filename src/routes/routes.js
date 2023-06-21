@@ -7,6 +7,7 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import CandidateDashboard from '../pages/candidateDashboard/CandidateDashboard';
 import AddJob from '../pages/employeeDashboard/AddJob';
+import EmployerCandidates from '../pages/employeeDashboard/EmployerCandidates';
 import EmployerDashboard from '../pages/employeeDashboard/EmployerDashboard';
 import MyJobs from '../pages/employeeDashboard/MyJobs';
 import Home from '../pages/home/Home';
@@ -70,6 +71,10 @@ const routes = createBrowserRouter([
 				element: <MyJobs />,
 			},
 			{
+				path: 'employer-candidates',
+				element: <EmployerCandidates />,
+			},
+			{
 				path: 'add-job',
 				element: <AddJob />,
 			},
@@ -83,6 +88,10 @@ const routes = createBrowserRouter([
 			},
 			{
 				path: 'candidate',
+				element: <CandidateDashboard />,
+			},
+			{
+				path: 'employer-candidates/candidate-details/:id',
 				element: <CandidateDashboard />,
 			},
 		],
