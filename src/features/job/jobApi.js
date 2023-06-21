@@ -8,7 +8,7 @@ const jobApi = apiSlice.injectEndpoints({
 				method: 'POST',
 				body: data,
 			}),
-			invalidatesTags: ['Jobs'],
+			invalidatesTags: ['Jobs', 'EmployerJobs'],
 		}),
 		apply: builder.mutation({
 			query: (data) => ({

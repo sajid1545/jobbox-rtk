@@ -33,7 +33,7 @@ const AddJob = () => {
 		if (isSuccess) {
 			toast.success('Job added successfully');
 			reset();
-			navigate('/jobs');
+			navigate('/dashboard/my-jobs');
 		}
 
 		if (isError) {

@@ -115,33 +115,37 @@ const CandidateDetails = () => {
 					<div className="text-primary my-2 space-y-10">
 						{queries?.map(
 							({ employerText, employerId, employerEmail, candidateId, reply, id }, idx) => (
-								<div key={id}>
-									<small>
-										{employerEmail} <span className="font-bold">(Employer)</span>{' '}
-									</small>
-									<p className="text-lg font-medium">{employerText}</p>
-									{reply?.map((item) => (
-										<p className="flex items-center gap-2 relative left-5">
-											<BsArrowReturnRight /> {item}{' '}
-											<span className="font-bold text-sm">({firstName})</span>
-										</p>
-									))}
+								<div key={idx}>
+									{user._id === employerId && (
+										<>
+											<small>
+												{employerEmail} <span className="font-bold">(Employer)</span>{' '}
+											</small>
+											<p className="text-lg font-medium">{employerText}</p>
+											{reply?.map((item) => (
+												<p className="flex items-center gap-2 relative left-5">
+													<BsArrowReturnRight /> {item}{' '}
+													<span className="font-bold text-sm">({firstName})</span>
+												</p>
+											))}
 
-									{user.role === 'candidate' && (
-										<div className="flex gap-3 my-5">
-											<input
-												onBlur={(event) => setReply(event.target.value)}
-												placeholder="Reply"
-												type="text"
-												className="w-full"
-											/>
-											<button
-												onClick={() => handleReply(candidateId)}
-												className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-												type="button">
-												<BsArrowRightShort size={30} />
-											</button>
-										</div>
+											{user.role === 'candidate' && (
+												<div className="flex gap-3 my-5">
+													<input
+														onBlur={(event) => setReply(event.target.value)}
+														placeholder="Reply"
+														type="text"
+														className="w-full"
+													/>
+													<button
+														onClick={() => handleReply(candidateId)}
+														className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+														type="button">
+														<BsArrowRightShort size={30} />
+													</button>
+												</div>
+											)}
+										</>
 									)}
 								</div>
 							)
