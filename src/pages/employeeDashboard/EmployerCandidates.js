@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../../components/reusable/Loading';
-import { useGetJobsByEmployerIdQuery } from '../../features/job/jobApi';
+import { useApproveMutation, useGetJobsByEmployerIdQuery } from '../../features/job/jobApi';
 
 const EmployerCandidates = () => {
 	const { user } = useSelector((state) => state.auth);
 
 	const { isLoading, data } = useGetJobsByEmployerIdQuery(user?._id);
+
+	const [approveCandidate, { isSuccess }] = useApproveMutation();
+
+	useEffect(() => {
+		if (isSuccess) {
+			toast.success('Approved');
+		}
+	}, [isSuccess]);
+
+	const handleApprove = (candidate, job) => {
+		const approveData = {
+			jobId: job._id,
+			candidateEmail: candidate.email,
+		};
+		console.log(approveData);
+		approveCandidate(approveData);
+	};
 
 	return (
 		<>
@@ -49,23 +67,44 @@ const EmployerCandidates = () => {
 										<td className="h-12 px-6 text-sm transition duration-300 border-t border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 ">
 											{job.position}
 										</td>
-										{job.applicants.map((candidate, idx) => {
+										{job.applicants.map((candidate, idx, idx2) => {
 											return (
 												<td
 													key={idx}
 													className=" px-6 text-sm transition duration-300 border-t border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 flex flex-col items-center justify-center gap-5 ">
 													<div className="h-[4rem] flex items-center gap-5 justify-center">
 														<div className="">
-															<h1>{candidate.email}</h1>
+															<h1 key={idx2}>{candidate.email}</h1>
 														</div>
-														<div className="space-x-20">
+														<div className="space-x-20 flex">
 															<Link to={`candidate-details/${candidate.id}`}>
 																<button className="py-1 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm">
 																	Details
 																</button>
 															</Link>
 
-															{job?.approved?.map((a) =>
+															<div
+																className={`${job?.approved?.map((a) =>
+																	a.email === candidate.email ? 'hidden' : 'block'
+																)}`}>
+																<button
+																	onClick={() => handleApprove(candidate, job)}
+																	className={`py-1 px-4  bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 focus:ring-offset-emerald-200  text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm `}>
+																	Approve Candidate
+																</button>
+															</div>
+															<div>
+																{job?.approved?.map(
+																	(a) =>
+																		a?.email === candidate.email && (
+																			<span className="text-green-600 font-bold text-xl underline">
+																				Approved
+																			</span>
+																		)
+																)}
+															</div>
+
+															{/* {job?.approved?.map((a) =>
 																a?.email === candidate.email ? (
 																	<span className="text-green-600 font-bold text-xl underline">
 																		Approved
@@ -75,7 +114,7 @@ const EmployerCandidates = () => {
 																		Approve Candidate
 																	</button>
 																)
-															)}
+															)} */}
 														</div>
 													</div>
 												</td>

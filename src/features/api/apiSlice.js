@@ -6,7 +6,7 @@ const apiSlice = createApi({
 		baseUrl: 'https://jobbox-server-rho.vercel.app',
 		// baseUrl: 'http://localhost:5000'
 	}),
-	tagTypes: ['Jobs', 'Job', 'Apply', 'EmployerJobs', 'Candidate'],
+	tagTypes: ['Jobs', 'Job', 'Apply', 'EmployerJobs', 'Candidate','Approve'],
 	endpoints: () => ({}),
 });
 
