@@ -28,7 +28,10 @@ const AppliedJobs = () => {
 	const {
 		user: { email, firstName, lastName },
 	} = useSelector((state) => state.auth);
-	const { data, isLoading } = useGetAppliedJobsQuery({ email, appliedFilter });
+	const { data, isLoading } = useGetAppliedJobsQuery(
+		{ email, appliedFilter },
+		{ pollingInterval: 1000 }
+	);
 
 	let content;
 

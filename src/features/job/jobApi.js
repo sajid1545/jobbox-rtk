@@ -58,7 +58,7 @@ const jobApi = apiSlice.injectEndpoints({
 				method: 'PATCH',
 				body: data,
 			}),
-			invalidatesTags: ['Approve','Apply'],
+			invalidatesTags: ['Apply','Approve','EmployerJobs'],
 		}),
 
 		closeJob: builder.mutation({
