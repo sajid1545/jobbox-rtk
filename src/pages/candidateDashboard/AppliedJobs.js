@@ -30,10 +30,26 @@ const AppliedJobs = () => {
 	} = useSelector((state) => state.auth);
 	const { data, isLoading } = useGetAppliedJobsQuery({ email, appliedFilter });
 
+	let content;
+
 	const dispatch = useDispatch();
 
 	if (isLoading) {
 		return <Loading />;
+	}
+
+	const approveJobs = data?.data?.filter((job) => job?.approved?.map((a) => a.email === email));
+
+	if (data?.data?.length) {
+		content = data?.data?.map((job) => (
+			<>
+				<JobCard key={job._id} jobData={job} />
+			</>
+		));
+	}
+
+	if (appliedFilter === 'approvedJobs' && approveJobs?.length) {
+		content = approveJobs?.map((job) => <JobCard key={job._id} jobData={job} />);
 	}
 
 	return (
@@ -64,17 +80,16 @@ const AppliedJobs = () => {
 								value={'lastUpload'}>
 								Last Applied
 							</MenuItem>
+							<MenuItem
+								onClick={() => dispatch(toggleApplyFilter('approvedJobs'))}
+								value={'approvedJobs'}>
+								Approved Jobs
+							</MenuItem>
 						</Select>
 					</FormControl>
 				</ThemeProvider>
 			</div>
-			<div className="grid grid-cols-1 gap-5 pb-5 px-20 md:px-0">
-				{data?.data?.map((job) => (
-					<>
-						<JobCard key={job._id} jobData={job} />
-					</>
-				))}
-			</div>
+			<div className="grid grid-cols-1 gap-5 pb-5 px-20 md:px-0">{content}</div>
 		</div>
 	);
 };
