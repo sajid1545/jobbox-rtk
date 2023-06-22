@@ -116,7 +116,7 @@ const CandidateDetails = () => {
 						{queries?.map(
 							({ employerText, employerId, employerEmail, candidateId, reply, id }, idx) => (
 								<div key={idx}>
-									{user._id === employerId && (
+									
 										<>
 											<small>
 												{employerEmail} <span className="font-bold">(Employer)</span>{' '}
@@ -146,7 +146,6 @@ const CandidateDetails = () => {
 												</div>
 											)}
 										</>
-									)}
 								</div>
 							)
 						)}
