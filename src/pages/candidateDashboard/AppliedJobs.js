@@ -41,11 +41,7 @@ const AppliedJobs = () => {
 	const approveJobs = data?.data?.filter((job) => job?.approved?.map((a) => a.email === email));
 
 	if (data?.data?.length) {
-		content = data?.data?.map((job) => (
-			<>
-				<JobCard key={job._id} jobData={job} />
-			</>
-		));
+		content = data?.data?.map((job) => <JobCard key={job._id} jobData={job} />);
 	}
 
 	if (appliedFilter === 'approvedJobs' && approveJobs?.length) {
