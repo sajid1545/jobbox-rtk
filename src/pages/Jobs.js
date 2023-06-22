@@ -5,6 +5,7 @@ import { useGetJobsQuery } from '../features/job/jobApi';
 const Jobs = () => {
 	const { isLoading, data } = useGetJobsQuery();
 
+	const openJobs = data?.data?.filter((job) => job.jobStatus === 'open');
 
 	return (
 		<div className="pt-14">
@@ -12,10 +13,10 @@ const Jobs = () => {
 				<h1 className="font-semibold text-xl">Find Jobs</h1>
 			</div>
 			{isLoading ? (
-				<h1 className='text-5xl text-center'>Loading....</h1>
+				<h1 className="text-5xl text-center">Loading....</h1>
 			) : (
 				<div className="grid grid-cols-2 gap-5 mt-5">
-					{data?.data?.map((job) => (
+					{openJobs?.map((job) => (
 						<JobCard key={job._id} jobData={job} />
 					))}
 				</div>

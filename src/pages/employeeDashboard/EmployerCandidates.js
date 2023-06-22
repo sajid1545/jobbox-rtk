@@ -67,16 +67,21 @@ const EmployerCandidates = () => {
 										<td className="h-12 px-6 text-sm transition duration-300 border-t border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 ">
 											{job.position}
 										</td>
+										{job?.applicants?.length === 0 && (
+											<td className="h-12 px-6 text-sm transition duration-300 border-t border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 ">
+												No Candidates
+											</td>
+										)}
 										{job.applicants.map((candidate, idx, idx2) => {
 											return (
 												<td
 													key={idx}
-													className=" px-6 text-sm transition duration-300 border-t border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 flex flex-col items-center justify-center gap-5 ">
+													className=" px-6 text-sm transition duration-300 border-t border-b border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 flex flex-col items-center justify-center gap-5 ">
 													<div className="h-[4rem] flex items-center gap-5 justify-center">
 														<div className="">
 															<h1 key={idx2}>{candidate.email}</h1>
 														</div>
-														<div className="space-x-20 flex">
+														<div className="space-x-10 flex">
 															<Link to={`candidate-details/${candidate.id}`}>
 																<button className="py-1 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm">
 																	Details
@@ -99,7 +104,7 @@ const EmployerCandidates = () => {
 																			? 'hidden'
 																			: 'block'
 																	}`}>
-																	Approve Candidate
+																	Approve
 																</button>
 															</div>
 															<div>
