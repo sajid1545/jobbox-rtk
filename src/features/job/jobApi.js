@@ -50,7 +50,7 @@ const jobApi = apiSlice.injectEndpoints({
 		}),
 		getJobsByEmployerId: builder.query({
 			query: (id) => `/job/employer-jobs/${id}`,
-			providesTags: ['EmployerJobs', 'Approve'],
+			providesTags: ['EmployerJobs'],
 		}),
 		approve: builder.mutation({
 			query: (data) => ({
@@ -58,7 +58,7 @@ const jobApi = apiSlice.injectEndpoints({
 				method: 'PATCH',
 				body: data,
 			}),
-			invalidatesTags: ['Approve'],
+			invalidatesTags: ['Approve','Apply'],
 		}),
 
 		closeJob: builder.mutation({

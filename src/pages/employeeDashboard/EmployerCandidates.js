@@ -88,8 +88,17 @@ const EmployerCandidates = () => {
 																	a.email === candidate.email ? 'hidden' : 'block'
 																)}`}>
 																<button
+																	disabled={job?.approved
+																		?.map((a) => a.email === candidate.email)
+																		.includes(true)}
 																	onClick={() => handleApprove(candidate, job)}
-																	className={`py-1 px-4  bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 focus:ring-offset-emerald-200  text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm `}>
+																	className={`py-1 px-4  bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 focus:ring-offset-emerald-200  text-white  transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-sm ${
+																		job?.approved
+																			?.map((a) => a.email === candidate.email)
+																			.includes(true)
+																			? 'hidden'
+																			: 'block'
+																	}`}>
 																	Approve Candidate
 																</button>
 															</div>
